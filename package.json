@@ -3,7 +3,7 @@
   "displayName": "Easy Brackets",
   "description": "Replaces brackets and quotes in a selection instead of inserting a new pair.",
   "version": "0.1.0",
-  "publisher": "Bad & Wrong",
+  "publisher": "Ihar Suvorau",
   "engines": {
     "vscode": "^1.84.0"
   },
