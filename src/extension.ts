@@ -1,8 +1,8 @@
 import * as vscode from "vscode";
-import { isClosingBracket, replaceBrackets } from "./test/brackets";
+import { isClosingBracket, isQuote, replaceBrackets, replaceQuotes } from "./test/brackets";
 
 export function activate(context: vscode.ExtensionContext) {
-  let replaceBrackets = vscode.commands.registerCommand("type", async (args) => {
+  let replaceBracketsDisposable = vscode.commands.registerCommand("type", async (args) => {
     let editor = vscode.window.activeTextEditor;
     if (!editor) {
       return;
@@ -10,23 +10,29 @@ export function activate(context: vscode.ExtensionContext) {
 
     const typedCharacter = args?.text;
 
-    if (
-      typedCharacter &&
-      isClosingBracket(typedCharacter) &&
-      editor.selections.some((selection) => !selection.isEmpty)
-    ) {
-      await replaceBracketsInSelections(editor, typedCharacter);
+    if (typedCharacter && editor.selections.some((selection) => !selection.isEmpty)) {
+      if (isClosingBracket(typedCharacter)) {
+        await replaceBracketsInSelections(editor, typedCharacter, replaceBrackets);
+      } else if (isQuote(typedCharacter)) {
+        await replaceBracketsInSelections(editor, typedCharacter, replaceQuotes);
+      } else {
+        vscode.commands.executeCommand("default:type", { text: typedCharacter });
+      }
     } else {
       vscode.commands.executeCommand("default:type", { text: typedCharacter });
     }
   });
 
-  context.subscriptions.push(replaceBrackets);
+  context.subscriptions.push(replaceBracketsDisposable);
 }
 
 export function deactivate() {}
 
-async function replaceBracketsInSelections(editor: vscode.TextEditor, typedCharacter: string) {
+async function replaceBracketsInSelections(
+  editor: vscode.TextEditor,
+  typedCharacter: string,
+  modify: (text: string, char: string) => string
+) {
   await editor
     .edit((editBuilder) => {
       editor.selections.forEach((selection) => {
@@ -34,7 +40,7 @@ async function replaceBracketsInSelections(editor: vscode.TextEditor, typedChara
           return;
         }
         let text = editor.document.getText(selection);
-        const newText = replaceBrackets(text, typedCharacter);
+        const newText = modify(text, typedCharacter);
         editBuilder.replace(selection, newText);
       });
     })
@@ -45,7 +51,7 @@ async function replaceBracketsInSelections(editor: vscode.TextEditor, typedChara
           selection.start.line,
           selection.start.character,
           selection.end.line,
-          selection.end.character + 1
+          selection.end.character + (isQuote(typedCharacter) ? 0 : 1)
         );
         return newSelection;
       });

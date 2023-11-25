@@ -4,34 +4,39 @@ export function replaceBrackets(text: string, newClosingBracket: string) {
   return `${newOpeningBracket}${newText}${newClosingBracket}`;
 }
 
-export function isClosingBracket(character: string) {
-  return openingBracketMap.has(character);
+export function replaceQuotes(text: string, newQuote: string) {
+  const newText = text.replace(/^['"`]|['"`]$/g, "");
+  return `${newQuote}${newText}${newQuote}`;
 }
 
-const closingBracketMap = new Map([
+export function isClosingBracket(character: string) {
+  return closingToOpeningBracketMap.has(character);
+}
+
+export function isQuote(character: string) {
+  return quotes.includes(character);
+}
+
+const openingToClosingBracketMap = new Map([
   ["{", "}"],
   ["(", ")"],
   ["[", "]"],
   ["<", ">"],
-  //   ['"', '"'],
-  //   ["'", "'"],
-  //   ["`", "`"],
 ]);
 
-const openingBracketMap = new Map([
+const closingToOpeningBracketMap = new Map([
   ["}", "{"],
   [")", "("],
   ["]", "["],
   [">", "<"],
-  //   ['"', '"'],
-  //   ["'", "'"],
-  //   ["`", "`"],
 ]);
 
+const quotes = ["'", '"', "`"];
+
 function getClosingBracket(openingBracket: string) {
-  return closingBracketMap.get(openingBracket) || "";
+  return openingToClosingBracketMap.get(openingBracket) || "";
 }
 
 function getOpeningBracket(closingBracket: string) {
-  return openingBracketMap.get(closingBracket) || "";
+  return closingToOpeningBracketMap.get(closingBracket) || "";
 }
