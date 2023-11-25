@@ -1,26 +1,53 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
-import * as vscode from 'vscode';
+import * as vscode from "vscode";
+import { isClosingBracket, replaceBrackets } from "./test/brackets";
 
-// This method is called when your extension is activated
-// Your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
+  let replaceBrackets = vscode.commands.registerCommand("type", async (args) => {
+    let editor = vscode.window.activeTextEditor;
+    if (!editor) {
+      return;
+    }
 
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "helloworld" is now active!');
+    const typedCharacter = args?.text;
 
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with registerCommand
-	// The commandId parameter must match the command field in package.json
-	let disposable = vscode.commands.registerCommand('helloworld.helloWorld', () => {
-		// The code you place here will be executed every time your command is executed
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World from HelloWorld!');
-	});
+    if (
+      typedCharacter &&
+      isClosingBracket(typedCharacter) &&
+      editor.selections.some((selection) => !selection.isEmpty)
+    ) {
+      await replaceBracketsInSelections(editor, typedCharacter);
+    } else {
+      vscode.commands.executeCommand("default:type", { text: typedCharacter });
+    }
+  });
 
-	context.subscriptions.push(disposable);
+  context.subscriptions.push(replaceBrackets);
 }
 
-// This method is called when your extension is deactivated
 export function deactivate() {}
+
+async function replaceBracketsInSelections(editor: vscode.TextEditor, typedCharacter: string) {
+  await editor
+    .edit((editBuilder) => {
+      editor.selections.forEach((selection) => {
+        if (!selection || selection.isEmpty) {
+          return;
+        }
+        let text = editor.document.getText(selection);
+        const newText = replaceBrackets(text, typedCharacter);
+        editBuilder.replace(selection, newText);
+      });
+    })
+    .then(() => {
+      // include the new brackets into selection and move cursor to the end of the selection
+      editor.selections = editor.selections.map((selection) => {
+        const newSelection = new vscode.Selection(
+          selection.start.line,
+          selection.start.character,
+          selection.end.line,
+          selection.end.character + 1
+        );
+        return newSelection;
+      });
+    });
+}
