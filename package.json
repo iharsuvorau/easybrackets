@@ -4,6 +4,10 @@
   "description": "Replaces brackets and quotes in a selection instead of inserting a new pair.",
   "version": "0.1.0",
   "publisher": "Ihar Suvorau",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/iharsuvorau/easybrackets"
+  },
   "engines": {
     "vscode": "^1.84.0"
   },
