@@ -1,8 +1,9 @@
 {
   "name": "easybrackets",
   "displayName": "Easy Brackets",
-  "description": "",
-  "version": "0.0.1",
+  "description": "Replaces brackets and quotes in a selection instead of inserting a new pair.",
+  "version": "0.1.0",
+  "publisher": "Bad & Wrong",
   "engines": {
     "vscode": "^1.84.0"
   },
