@@ -3,7 +3,7 @@
   "displayName": "Easy Brackets",
   "description": "Replaces brackets and quotes in a selection instead of inserting a new pair.",
   "version": "0.1.0",
-  "publisher": "Ihar Suvorau",
+  "publisher": "badwrong",
   "repository": {
     "type": "git",
     "url": "https://github.com/iharsuvorau/easybrackets"
@@ -14,6 +14,15 @@
   "categories": [
     "Other"
   ],
+  "keywords": [
+    "brackets",
+    "parentheses",
+    "quotes",
+    "wrap",
+    "surround",
+    "enclose"
+  ],
+  "icon": "images/icon.png",
   "activationEvents": [
     "onCommand:type"
   ],
