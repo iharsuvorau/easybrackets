@@ -2,7 +2,7 @@
   "name": "easybrackets",
   "displayName": "Easy Brackets",
   "description": "Replaces brackets and quotes in a selection instead of inserting a new pair.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "publisher": "badwrong",
   "repository": {
     "type": "git",
@@ -22,7 +22,7 @@
     "surround",
     "enclose"
   ],
-  "icon": "images/icon.png",
+  "icon": "images/icon@2x.png",
   "activationEvents": [
     "onCommand:type"
   ],

@@ -10,3 +10,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Brackets `<{([` and quotes <code>'"`</code> manipulation on typing.
+
+### [0.1.1] – 2023-10-26
+
+### Changed
+
+- Extension icon updated.
