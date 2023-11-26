@@ -51,7 +51,7 @@ async function replaceBracketsInSelections(
           selection.start.line,
           selection.start.character,
           selection.end.line,
-          selection.end.character + (isQuote(typedCharacter) ? 0 : 1)
+          selection.end.character
         );
         return newSelection;
       });
