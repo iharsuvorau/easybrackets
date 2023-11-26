@@ -1,5 +1,5 @@
 import * as vscode from "vscode";
-import { isClosingBracket, isQuote, replaceBrackets, replaceQuotes } from "./test/brackets";
+import { isClosingBracket, isQuote, replaceBrackets, replaceQuotes } from "./brackets";
 
 export function activate(context: vscode.ExtensionContext) {
   let replaceBracketsDisposable = vscode.commands.registerCommand("type", async (args) => {
