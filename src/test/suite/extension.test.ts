@@ -1,7 +1,7 @@
 import * as assert from "assert";
 
 import * as vscode from "vscode";
-import { replaceBrackets, replaceQuotes } from "../brackets";
+import { replaceBrackets, replaceQuotes } from "../../brackets";
 
 suite("Extension Test Suite", () => {
   vscode.window.showInformationMessage("Start all tests.");
